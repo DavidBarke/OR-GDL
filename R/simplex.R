@@ -34,9 +34,9 @@ primal_simplex <- function(m, step) {
   pc <- p_col(m, pc_index)
 
   ## Select pivot row
+  if (!any(pc > 0)) stop("Primal simplex: unbound solution.")
   # b_j / A_ij >= 0
   nn <- which(b / pc >= 0)
-  if (!length(nn)) stop("Primal simplex: no solution.")
   quot <- b[nn] / pc[nn]
   # Take first row index when min is tied
   pr_nn_index <- which(quot == min(quot))[1]
@@ -66,7 +66,11 @@ dual_simplex <- function(m, step) {
 
   ## select pivot col
   neg <- which(pr < 0)
-  if (!length(neg)) stop("Dual simplex: no solution.")
+  if (!length(neg)) {
+    print(m)
+    stop("Dual simplex: no solution.", call. = FALSE)
+  }
+
   quot <- z[neg] / pr[neg]
   pc_index <- which(quot == max(quot))[1]
 
