@@ -34,7 +34,7 @@ primal_simplex <- function(m, step) {
   pc <- p_col(m, pc_index)
 
   ## Select pivot row
-  if (!any(pc > 0)) stop("Primal simplex: unbound solution.")
+  if (!any(pc > 0)) stop("Primal simplex: unbound, no optimal solution!")
   # b_j / A_ij >= 0
   nn <- which(b / pc >= 0)
   quot <- b[nn] / pc[nn]
@@ -68,7 +68,7 @@ dual_simplex <- function(m, step) {
   neg <- which(pr < 0)
   if (!length(neg)) {
     print(m)
-    stop("Dual simplex: no solution.", call. = FALSE)
+    stop("Dual simplex: no solution!", call. = FALSE)
   }
 
   quot <- z[neg] / pr[neg]
